@@ -145,6 +145,20 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                                // code exchange
                                OIDTokenRequest *tokenExchangeRequest =
                                    [authorizationResponse tokenExchangeRequest];
+                                 
+                                 if (OIDAuthorizationService.snakewareHack) {
+                                     tokenExchangeRequest = [[OIDTokenRequest alloc] initWithConfiguration: tokenExchangeRequest.configuration
+                                                                                 grantType:OIDGrantTypeAuthorizationCode
+                                                                         authorizationCode:tokenExchangeRequest.authorizationCode
+                                                                               redirectURL:tokenExchangeRequest.redirectURL
+                                                                                  clientID:tokenExchangeRequest.clientID
+                                                                              clientSecret:tokenExchangeRequest.clientSecret
+                                                                                     scope:nil
+                                                                              refreshToken:nil
+                                                                              codeVerifier:nil
+                                                                      additionalParameters:tokenExchangeRequest.additionalParameters];
+                                 }
+                                 
                                [OIDAuthorizationService performTokenRequest:tokenExchangeRequest
                                               originalAuthorizationResponse:authorizationResponse
                                    callback:^(OIDTokenResponse *_Nullable tokenResponse,

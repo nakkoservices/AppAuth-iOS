@@ -152,7 +152,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                       parameters:query.dictionaryValue];
       
     // verifies that the state in the response matches the state in the request, or both are nil
-    if (!OIDIsEqualIncludingNil(_request.state, response.state)) {
+    if (!OIDAuthorizationService.snakewareHack && !OIDIsEqualIncludingNil(_request.state, response.state)) {
       NSMutableDictionary *userInfo = [query.dictionaryValue mutableCopy];
       userInfo[NSLocalizedDescriptionKey] =
         [NSString stringWithFormat:@"State mismatch, expecting %@ but got %@ in authorization "
@@ -273,7 +273,7 @@ NS_ASSUME_NONNULL_BEGIN
                                                  parameters:query.dictionaryValue];
   
   // verifies that the state in the response matches the state in the request, or both are nil
-  if (!OIDIsEqualIncludingNil(_request.state, response.state)) {
+  if (!OIDAuthorizationService.snakewareHack && !OIDIsEqualIncludingNil(_request.state, response.state)) {
     NSMutableDictionary *userInfo = [query.dictionaryValue mutableCopy];
     userInfo[NSLocalizedDescriptionKey] =
     [NSString stringWithFormat:@"State mismatch, expecting %@ but got %@ in authorization "
@@ -635,7 +635,7 @@ NS_ASSUME_NONNULL_BEGIN
       }
 
       // Only relevant for the authorization_code response type
-      if ([tokenResponse.request.grantType isEqual:OIDGrantTypeAuthorizationCode]) {
+      if (!OIDAuthorizationService.snakewareHack && [tokenResponse.request.grantType isEqual:OIDGrantTypeAuthorizationCode]) {
         // OpenID Connect Core Section 3.1.3.7. rule #11
         // Validates the nonce.
         NSString *nonce = authorizationResponse.request.nonce;
@@ -784,6 +784,12 @@ NS_ASSUME_NONNULL_BEGIN
     });
   }] resume];
 }
+
+static BOOL snakewareHack = NO;
++ (BOOL) snakewareHack
+{ @synchronized(self) { return snakewareHack; } }
++ (BOOL) setSnakewareHack:(BOOL)value
+{ @synchronized(self) { snakewareHack = value; } }
 
 @end
 

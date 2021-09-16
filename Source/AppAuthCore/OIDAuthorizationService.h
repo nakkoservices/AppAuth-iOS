@@ -165,6 +165,9 @@ typedef void (^OIDRegistrationCompletion)(OIDRegistrationResponse *_Nullable reg
 + (void)performRegistrationRequest:(OIDRegistrationRequest *)request
                         completion:(OIDRegistrationCompletion)completion;
 
++ (BOOL)snakewareHack;
++ (BOOL)setSnakewareHack:(BOOL)value;
+
 @end
 
 NS_ASSUME_NONNULL_END
