@@ -155,7 +155,7 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                                                                               clientSecret:tokenExchangeRequest.clientSecret
                                                                                      scope:nil
                                                                               refreshToken:nil
-                                                                              codeVerifier:nil
+                                                                              codeVerifier:tokenExchangeRequest.codeVerifier
                                                                       additionalParameters:tokenExchangeRequest.additionalParameters];
                                  }
                                  
