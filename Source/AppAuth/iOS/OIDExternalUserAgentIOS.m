@@ -123,7 +123,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
   }
   // iOS 11, use SFAuthenticationSession
-  if (@available(iOS 11.0, *)) {
+  else if (@available(iOS 11.0, *)) {
     // SFAuthenticationSession doesn't work with guided access (rdar://40809553)
     if (!openedUserAgent && !UIAccessibilityIsGuidedAccessEnabled()) {
       __weak OIDExternalUserAgentIOS *weakSelf = self;
@@ -153,7 +153,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
   }
   // iOS 9 and 10, use SFSafariViewController
-  if (@available(iOS 9.0, *)) {
+  else if (@available(iOS 9.0, *)) {
     if (!openedUserAgent && _presentingViewController) {
       SFSafariViewController *safariVC =
           [[SFSafariViewController alloc] initWithURL:requestURL];
@@ -164,7 +164,7 @@ NS_ASSUME_NONNULL_BEGIN
     }
   }
   // iOS 8 and earlier, use mobile Safari
-  if (!openedUserAgent){
+  else if (!openedUserAgent){
     openedUserAgent = [[UIApplication sharedApplication] openURL:requestURL];
   }
 
