@@ -118,6 +118,9 @@ NS_ASSUME_NONNULL_BEGIN
           authenticationVC.presentationContextProvider = self;
       }
 #endif
+      if (@available(iOS 13.0, *)) {
+        authenticationVC.prefersEphemeralWebBrowserSession = YES;
+      }
       _webAuthenticationVC = authenticationVC;
       openedUserAgent = [authenticationVC start];
     }
