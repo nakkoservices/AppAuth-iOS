@@ -43,6 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @implementation OIDExternalUserAgentIOS {
   UIViewController *_presentingViewController;
+  BOOL _prefersEphemeralSession;
 
   BOOL _externalUserAgentFlowInProgress;
   __weak id<OIDExternalUserAgentSession> _session;
@@ -54,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma clang diagnostic pop
 }
 
-- (instancetype)init {
+- (null_unspecified instancetype)init {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wnonnull"
   return [self initWithPresentingViewController:nil];
@@ -71,6 +72,16 @@ NS_ASSUME_NONNULL_BEGIN
 #endif // __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
     
     _presentingViewController = presentingViewController;
+  }
+  return self;
+}
+
+- (nullable instancetype)initWithPresentingViewController:
+    (UIViewController *)presentingViewController
+                                  prefersEphemeralSession:(BOOL)prefersEphemeralSession {
+  self = [self initWithPresentingViewController:presentingViewController];
+  if (self) {
+    _prefersEphemeralSession = prefersEphemeralSession;
   }
   return self;
 }
@@ -115,7 +126,8 @@ NS_ASSUME_NONNULL_BEGIN
       }];
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 130000
       if (@available(iOS 13.0, *)) {
-          authenticationVC.presentationContextProvider = self;
+        authenticationVC.presentationContextProvider = self;
+        authenticationVC.prefersEphemeralWebBrowserSession = _prefersEphemeralSession;
       }
 #endif
       if (@available(iOS 13.0, *)) {

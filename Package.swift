@@ -23,7 +23,7 @@ import PackageDescription
 let package = Package(
     name: "AppAuth",
     platforms: [
-        .macOS(.v10_10),
+        .macOS(.v10_12),
         .iOS(.v11),
         .tvOS(.v9),
         .watchOS(.v2)
@@ -34,7 +34,10 @@ let package = Package(
             targets: ["AppAuthCore"]),
         .library(
             name: "AppAuth",
-            targets: ["AppAuth"])
+            targets: ["AppAuth"]),
+        .library(
+            name: "AppAuthTV",
+            targets: ["AppAuthTV"])
     ],
     dependencies: [],
     targets: [
@@ -55,17 +58,28 @@ let package = Package(
                 .headerSearchPath("macOS/LoopbackHTTPServer"),
             ]
         ),
+        .target(
+            name: "AppAuthTV",
+            dependencies: ["AppAuthCore"],
+            path: "Source/AppAuthTV",
+            publicHeadersPath: ""
+        ),
         .testTarget(
             name: "AppAuthCoreTests",
             dependencies: ["AppAuthCore"],
             path: "UnitTests",
-            exclude: ["OIDSwiftTests.swift"]
+            exclude: ["OIDSwiftTests.swift", "AppAuthTV"]
         ),
         .testTarget(
             name: "AppAuthCoreSwiftTests",
             dependencies: ["AppAuthCore"],
             path: "UnitTests",
             sources: ["OIDSwiftTests.swift"]
-        )
+        ),
+        .testTarget(
+            name: "AppAuthTVTests",
+            dependencies: ["AppAuthTV"],
+            path: "UnitTests/AppAuthTV"
+        ),
     ]
 )
