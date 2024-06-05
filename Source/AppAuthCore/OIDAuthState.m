@@ -150,7 +150,8 @@ static const NSUInteger kExpiryTimeTolerance = 60;
                                                                                      scope:nil
                                                                               refreshToken:nil
                                                                               codeVerifier:tokenExchangeRequest.codeVerifier
-                                                                      additionalParameters:tokenExchangeRequest.additionalParameters];
+                                                                      additionalParameters:tokenExchangeRequest.additionalParameters
+                                                                         additionalHeaders:nil];
                                  }
                                  
                                [OIDAuthorizationService performTokenRequest:tokenExchangeRequest
